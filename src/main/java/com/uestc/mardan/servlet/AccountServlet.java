@@ -1,8 +1,24 @@
+/*
+ ************ About ME ************
+ * @author            : Mardan (ka1i)
+ * @date              : Thu Jul 18 10:00:24 CST 2019
+ * @e-mail            : GuzalInspire@hotmail.com
+ *
+ *********** About this ***********
+ * @project           : helloservlet
+ * @name              : AccountServlet.java
+ * @Last Modified by  : Mardan
+ * @Last Modified time: Fri Jul 19 17:17:22 CST 2019
+ */
+
+package com.uestc.mardan.servlet;
+
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-public class myservlet extends HttpServlet {
+public class AccountServlet extends HttpServlet {
+
     private String message;
 
     public void init() throws ServletException
