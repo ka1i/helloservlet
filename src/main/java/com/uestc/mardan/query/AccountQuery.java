@@ -18,6 +18,7 @@ import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+import com.uestc.mardan.maper.AccountMapper;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
@@ -32,7 +33,7 @@ public class AccountQuery {
     private QueryRunner query = new QueryRunner(JdbcUtils.getDataSource());
 
     public Account findById(int id) {
-        String sql = "SELECT ACCOUNT_ID ACCOUNTID, EMAIL, PASSWORD, NICK_NAME NICKNAME FROM \"ACCOUNT\" WHERE ACCOUNT_ID = ?";
+        String sql = "SELECT ACCOUNT_ID ACCOUNTID, EMAIL, PASSWORD, NICK_NAME NICKNAME FROM ACCOUNT WHERE ACCOUNT_ID = ?";
         try {
             return query.query(sql, new BeanHandler<Account>(Account.class), id);
         } catch (SQLException e) {
@@ -43,7 +44,7 @@ public class AccountQuery {
     }
 
     public Account findByEmail(String email) {
-        String sql = "SELECT ACCOUNT_ID ACCOUNTID, EMAIL, PASSWORD, NICK_NAME NICKNAME FROM \"ACCOUNT\" WHERE EMAIL = ?";
+        String sql = "SELECT ACCOUNT_ID ACCOUNTID, EMAIL, PASSWORD, NICK_NAME NICKNAME FROM ACCOUNT WHERE EMAIL = ?";
         try {
             return query.query(sql, new BeanHandler<Account>(Account.class), email);
         } catch (SQLException e) {
@@ -55,7 +56,7 @@ public class AccountQuery {
 
 
     public List<Account> findAll(){
-        String sql = "SELECT ACCOUNT_ID ACCOUNTID, EMAIL, PASSWORD, NICK_NAME NICKNAME FROM \"ACCOUNT\"";
+        String sql = "SELECT ACCOUNT_ID ACCOUNTID, EMAIL, PASSWORD, NICK_NAME NICKNAME FROM ACCOUNT";
 
         try {
             return query.query(sql, new BeanListHandler<Account>(Account.class));
@@ -67,7 +68,7 @@ public class AccountQuery {
     }
 
     public long insert( Account account ) throws SQLException {
-        String sql = "INSERT INTO \"ACCOUNT\"(EMAIL, PASSWORD, NICK_NAME) VALUES(?,?,?)";
+        String sql = "INSERT INTO ACCOUNT(EMAIL, PASSWORD, NICK_NAME) VALUES(?,?,?)";
 
         try {
             return query.insert(sql, new ScalarHandler<Long>(1), account.getEmail(), account.getPassword(), account.getNickName());
@@ -78,7 +79,7 @@ public class AccountQuery {
         }
     }
     public int delete( int accountId ) throws SQLException {
-        String sql = "DELETE FROM \"ACCOUNT\" WHERE ACCOUNT_ID = ?";
+        String sql = "DELETE FROM ACCOUNT WHERE ACCOUNT_ID = ?";
         try {
             return query.execute(sql, accountId);
         } catch (SQLException e) {
@@ -89,7 +90,7 @@ public class AccountQuery {
     }
 
     public int update( Account account ) throws SQLException {
-        String sql = "UPDATE \"ACCOUNT\" SET EMAIL = ?, NICK_NAME = ? WHERE ACCOUNT_ID = ?";
+        String sql = "UPDATE ACCOUNT SET EMAIL = ?, NICK_NAME = ? WHERE ACCOUNT_ID = ?";
         try {
             return query.update(sql, account.getEmail(), account.getNickName(), account.getAccountId());
         } catch (SQLException e) {
@@ -102,7 +103,7 @@ public class AccountQuery {
     public void Show(){
         try{
             Connection conn = DriverManager.getConnection("jdbc:postgresql://192.168.160.132:5432/maven","mardan","2012weilai");
-            String sql = "SELECT * FROM \"ACCOUNT\"";
+            String sql = "SELECT * FROM ACCOUNT";
 
             List<Object[]> result = query.query(conn,sql,new ArrayListHandler());
             for (Object[] objs : result) {

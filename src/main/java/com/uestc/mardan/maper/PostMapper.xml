@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uestc.mardan.mapper.PostMapper">
+    <select id="findAll" resultType="post">
+		SELECT
+			p.post_id,
+			p.title,
+			p.content,
+			p.created,
+			a.account_id "account.accountId",
+			a.email "account.email",
+			a.nick_name "account.nickName",
+		FROM
+			post p
+			INNER JOIN account a ON a.account_id = p.account_id
+	</select>
+
+</mapper>

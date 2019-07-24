@@ -13,12 +13,16 @@
 
 package com.uestc.mardan.domain;
 
+import java.util.List;
+
 public class Account {
 
     private Integer accountId;
     private String email;
     private String password;
     private String nickName;
+
+    private List<Post> posts;
 
     public Account() {}
     public Account(String email, String password, String nickName) {
@@ -50,6 +54,13 @@ public class Account {
     }
     public void setNickName(String nickName) {
         this.nickName = nickName;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
     }
 
     @Override

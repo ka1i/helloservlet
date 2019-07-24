@@ -13,6 +13,7 @@
 
 package com.uestc.mardan.servlet;
 
+import java.sql.SQLException;
 import java.util.List;
 import org.junit.Test;
 
@@ -39,5 +40,18 @@ public class AccountQueryTest {
             System.out.print(objs+"\t");
             System.out.println();
         }
+    }
+
+    @Test
+    public void testInsert() throws SQLException {
+        Account account = new Account();
+        account.setAccountId(1105);
+        account.setEmail("11wangwu1@163.com");
+        account.setPassword("12343456");
+        account.setNickName("wangwu231");
+
+        long accountId = AQ.insert(account);
+
+        System.out.println( accountId );
     }
 }

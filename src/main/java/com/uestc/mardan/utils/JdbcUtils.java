@@ -16,9 +16,16 @@ package com.uestc.mardan.utils;
 import java.beans.PropertyVetoException;
 
 import javax.sql.DataSource;
+import java.io.IOException;
+import java.io.Reader;
 import java.sql.DriverManager;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import jdk.internal.loader.Resource;
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 public class JdbcUtils {
     private static ComboPooledDataSource dataSource;
@@ -38,4 +45,64 @@ public class JdbcUtils {
     public static DataSource getDataSource() {
         return dataSource;
     }
+
+    public  static SqlSessionFactory sqlSessionFactory;
+
+    private static ThreadLocal<T>;
+
+    static {
+        String resoure = "mybatis-config.xml";
+        Reader inputStream;
+        try {
+            inputStream = Resources.getResourceAsReader(resoure);
+            sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static SqlSessionFactory getSqlSessionFactory(){
+        return sqlSessionFactory;
+    }
+
+    public static SqlSession getSession(){
+        SqlSession session = tl.get();
+        if (session == null){
+            session = sqlSessionFactory.openSession(true);
+            tl.set(session);
+        }
+        return  session;
+    }
+
+    public static void begin(){
+        SqlSession session = sqlSessionFactory.openSession();
+        tl.set(session);
+    }
+
+    public static void commit(){
+        SqlSession session = tl.get();
+        if(session != null){
+            session.commit();
+            session.close();
+            tl.remove();
+        }
+    }
+
+    public static void rollback(){
+        SqlSession session = tl.get();
+        if (session != null){
+            session.rollback();
+            session.close();
+            tl.remove();
+        }
+    }
+
+    public static void close(){
+        SqlSession session = tl.get();
+        if (session != null){
+            session.close();
+            tl.remove();
+        }
+    }
+
 }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uestc.mardan.mapper.AccountMapper">
+
+
+    <sql id="a">
+		account_id, email, password, nick_name
+	</sql>
+    <resultMap type="Account" id="accountMap">
+        <id column="account_id" property="accountId"/>
+        <result column="email" property="email"/>
+        <result column="nick_name" property="nickName"/>
+        <collection property="posts" ofType="Post">
+            <id column="post_id" property="postId"/>
+            <result column="title" property="title"/>
+            <result column="content" property="content"/>
+            <result column="created" property="created"/>
+        </collection>
+    </resultMap>
+    <select id="findById" parameterType="int" resultMap="accountMap">
+		SELECT
+			a.account_id,
+			a.email,
+			a.nick_name,
+			p.post_id,
+			p.title,
+			p.content,
+			p.created
+		FROM
+			account a
+			LEFT JOIN post p ON a.account_id = p.account_id
+		WHERE a.account_id = #{id}
+	</select>
+    <select id="findAll" parameterType="int" resultType="Account">
+        SELECT
+        <include refid="a"></include>
+        FROM ACCOUNT
+        LIMIT #{start}, #{offset} order by account_id
+    </select>
+    <insert id="insert" parameterType="Account" useGeneratedKeys="true" keyProperty="accountId">
+        INSERT INTO
+        account(email,password,nick_name,pic)
+        VALUES(#{email},#{password},#{nickName})
+    </insert>
+</mapper>
